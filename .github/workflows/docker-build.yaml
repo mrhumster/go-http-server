@@ -43,4 +43,4 @@ jobs:
 
       - name: Update Kubernetes Deployment
         run: |
-          kubectl -n go-app set image deployment/go-webserver server=xomrkob/go-http-server:${{ github.sha }}
+          kubectl -n go-app set image deployment/go-webserver image=xomrkob/go-http-server:${{ github.sha }}
