@@ -25,7 +25,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: your-dockerhub-username/my-go-server
+        images: xomrkob/go-http-server
         tags: |
           type=raw,value=latest
           type=ref,event=branch
