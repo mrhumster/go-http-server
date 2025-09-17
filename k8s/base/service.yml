@@ -8,6 +8,4 @@ spec:
   ports:
     - port: 3333
       targetPort: 3333
-    - port: 4444
-      targetPort: 4444
   type: ClusterIP
