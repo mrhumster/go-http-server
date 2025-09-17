@@ -9,6 +9,9 @@ import (
 	"net/http"
 )
 
+var version = "dev"
+var buildDate = "unknown"
+
 const keyServerAddr = "serverAddr"
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
