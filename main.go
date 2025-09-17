@@ -9,8 +9,8 @@ import (
 	"net/http"
 )
 
-var version = "dev"
-var buildDate = "unknown"
+var version = "1.0.1"
+var buildDate = "2025-09-17"
 
 const keyServerAddr = "serverAddr"
 
