@@ -1,6 +1,6 @@
 FROM golang:1.25-alpine AS builder
-ARG VERSION=unknown 
-ARG BUILD_DATE=unknown 
+ARG VERSION=1.0.1 
+ARG BUILD_DATE=17.09.2025 
 
 WORKDIR /app
 COPY go.mod ./ 

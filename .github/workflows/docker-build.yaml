@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
             type=raw,value=latest
             type=ref,event=branch
             type=ref,event=pr
-            type=raw,value=${{ github.sha }}  # Используйте SHA коммита
+            type=raw,value=${{ github.sha }}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
@@ -40,3 +40,9 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+
+      - name: Update Kubernetes Deployment
+        run: |
+          kubectl -n go-app set image deployment/go-webserver server=xomrkob/go-http-server:${{ github.sha }}
+        env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
