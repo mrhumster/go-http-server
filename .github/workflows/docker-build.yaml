@@ -45,4 +45,4 @@ jobs:
         run: |
           kubectl -n go-app set image deployment/go-webserver server=xomrkob/go-http-server:${{ github.sha }}
         env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
