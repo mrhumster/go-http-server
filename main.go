@@ -16,8 +16,6 @@ const keyServerAddr = "serverAddr"
 
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	fmt.Printf("%s: got / request\n", ctx.Value(keyServerAddr))
-
 	second := r.URL.Query().Get("second") // Getting Query Params
 	body, err := io.ReadAll(r.Body)       // Getting BODY
 	if err != nil {
@@ -39,10 +37,9 @@ func getHealth(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	mux := http.NewServeMux()
+	mux.HandleFunc("/health", getHealth)
 	mux.HandleFunc("/", getRoot)
 	mux.HandleFunc("/hello", getHello)
-	mux.HandleFunc("/health", getHealth)
-
 	ctx, cancelCtx := context.WithCancel(context.Background())
 
 	serverOne := &http.Server{
