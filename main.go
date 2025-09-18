@@ -18,16 +18,12 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	fmt.Printf("%s: got / request\n", ctx.Value(keyServerAddr))
 
-	second := r.URL.Query().Get("second")
-	body, err := io.ReadAll(r.Body)
+	second := r.URL.Query().Get("second") // Getting Query Params
+	body, err := io.ReadAll(r.Body)       // Getting BODY
 	if err != nil {
 		fmt.Printf("could not read body: %s\n", err)
 	}
-	fmt.Printf("%s: got / request. second=%s body:\n%s\n",
-		ctx.Value(keyServerAddr),
-		second,
-		body)
-
+	fmt.Printf("%s: got / request. second=%s body:\n%s\n", ctx.Value(keyServerAddr), second, body)
 	io.WriteString(w, "This is my website!\n")
 }
 
@@ -37,10 +33,15 @@ func getHello(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello, HTTP!\n")
 }
 
+func getHealth(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, "healthy")
+}
+
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", getRoot)
 	mux.HandleFunc("/hello", getHello)
+	mux.HandleFunc("/health", getHealth)
 
 	ctx, cancelCtx := context.WithCancel(context.Background())
 
