@@ -32,7 +32,7 @@ func getHello(w http.ResponseWriter, r *http.Request) {
 }
 
 func getHealth(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("healthy request")
+	fmt.Printf("healthy request\n")
 	io.WriteString(w, "healthy")
 }
 
