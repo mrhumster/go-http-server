@@ -32,14 +32,15 @@ func getHello(w http.ResponseWriter, r *http.Request) {
 }
 
 func getHealth(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("healthy request")
 	io.WriteString(w, "healthy")
 }
 
 func main() {
 	mux := http.NewServeMux()
+	mux.HandleFunc("/hello", getHello)
 	mux.HandleFunc("/health", getHealth)
 	mux.HandleFunc("/", getRoot)
-	mux.HandleFunc("/hello", getHello)
 	ctx, cancelCtx := context.WithCancel(context.Background())
 
 	serverOne := &http.Server{
