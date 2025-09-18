@@ -17,6 +17,17 @@ const keyServerAddr = "serverAddr"
 func getRoot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	fmt.Printf("%s: got / request\n", ctx.Value(keyServerAddr))
+
+	second := r.URL.Query().Get("second")
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("could not read body: %s\n", err)
+	}
+	fmt.Printf("%s: got / request. second=%s body:\n%s\n",
+		ctx.Value(keyServerAddr),
+		second,
+		body)
+
 	io.WriteString(w, "This is my website!\n")
 }
 
