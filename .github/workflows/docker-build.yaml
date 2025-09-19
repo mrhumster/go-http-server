@@ -33,6 +33,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Extract metadata for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -61,3 +62,23 @@ jobs:
       - name: Update Kubernetes Deployment
         run: |
           kubectl -n go-app set image deployment/go-webserver go-webserver=xomrkob/go-http-server:${{ github.sha }}
+  notify:
+    name: Telegram Notification
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: always()
+
+    steps:
+      - name: Send status to Telegram
+        uses: appleboy/telegram-action@v1.0.0
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: |
+            🔔 ${{ github.workflow }} - ${{ job.status }}
+            📦 ${{ github.repository }}
+            🌿 ${{ github.ref_name }}
+            👤 ${{ github.actor }}
+            ✅ Test: ${{ needs.test.result }}
+            🐳 Build: ${{ needs.build.result }}
+            🔗 ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
