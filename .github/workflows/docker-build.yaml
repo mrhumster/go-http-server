@@ -6,6 +6,7 @@ on:
 
 jobs:
   test:
+    name: Testing Go application
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +33,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Extract metadata for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -45,14 +45,19 @@ jobs:
             type=raw,value=${{ github.sha }}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+  update-image:
+    name: Update image in kubernetes pod
+    runs-on: self-hosted
+    needs: build
+    if: success()
 
+    steps:
       - name: Update Kubernetes Deployment
         run: |
           kubectl -n go-app set image deployment/go-webserver go-webserver=xomrkob/go-http-server:${{ github.sha }}
