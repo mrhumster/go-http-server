@@ -15,7 +15,10 @@ jobs:
       - run: go test ./...
 
   build:
+    name: Build and Push Docker
     runs-on: self-hosted
+    needs: test
+    if: success()
 
     steps:
       - name: Checkout code

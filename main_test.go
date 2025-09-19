@@ -27,7 +27,7 @@ func TestGetHello(t *testing.T) {
 	res := w.Result()
 	defer res.Body.Close()
 
-	assert.NotEqual(t, http.StatusOK, res.StatusCode)
+	assert.Equal(t, http.StatusOK, res.StatusCode)
 	data, err := io.ReadAll(res.Body)
 	require.NoError(t, err)
 	assert.Equal(t, responseBody, strings.TrimSpace(string(data)))
