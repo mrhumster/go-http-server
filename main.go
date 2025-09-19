@@ -40,7 +40,7 @@ func getHello(w http.ResponseWriter, r *http.Request) {
 func getHealth(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	fmt.Printf("%s: healthy request\n", ctx.Value(keyServerAddr))
-	io.WriteString(w, "healthy")
+	io.WriteString(w, "✅")
 }
 
 func main() {

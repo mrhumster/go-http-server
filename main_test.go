@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetHello(t *testing.T) {
+func Test_getHello(t *testing.T) {
 	responseBody := "Hello, Billy!"
 	payload := strings.NewReader("myName=Billy")
 
@@ -32,4 +32,21 @@ func TestGetHello(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, responseBody, strings.TrimSpace(string(data)))
 
+}
+
+func Test_getHealth(t *testing.T) {
+	responseBody := "✅"
+	method := http.MethodGet
+	url := "/health"
+	req := httptest.NewRequest(method, url, nil)
+	ctx := context.WithValue(req.Context(), "serverAddr", "httptest")
+	req = req.WithContext(ctx)
+	w := httptest.NewRecorder()
+	getHealth(w, req)
+	res := w.Result()
+	defer res.Body.Close()
+	assert.Equal(t, http.StatusOK, res.StatusCode)
+	data, err := io.ReadAll(res.Body)
+	require.NoError(t, err)
+	assert.Equal(t, responseBody, strings.TrimSpace(string(data)))
 }
